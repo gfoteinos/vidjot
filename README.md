@@ -1,0 +1,1 @@
+An application where content creators can register and jot down and manage ideas for future videos.
