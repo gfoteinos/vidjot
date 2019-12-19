@@ -1,4 +1,4 @@
-// Bring in istalled modules
+// Bring in installed modules
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
