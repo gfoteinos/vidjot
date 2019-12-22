@@ -1,6 +1,7 @@
 
 // Bring in istalled modules
 const express = require('express');
+const path = require('path');
 const exphbs = require('express-handlebars');
 const methodOverride = require('method-override');
 const flash = require('connect-flash');
@@ -13,6 +14,7 @@ const app = express();
 
 // Load routes 
 const ideas = require('./routes/ideas');
+const users = require('./routes/users');
 
 
 // Map global promise - get rid of warning 
@@ -37,6 +39,10 @@ app.set('view engine', 'handlebars');
 // Body-parse middleware 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+
+// Path middleware 
+  // Set the "public" folder to be the "express static" folder 
+  app.use(express.static(path.join(__dirname, 'public')));
 
 // Method-override middleware
 app.use(methodOverride('_method'))
@@ -75,18 +81,9 @@ app.use(function(req, res, next) {
     res.render('about');
   });
 
-  // Login route
-  app.get('/users/login', (req, res) => {
-    res.send('login')
-  }); 
-
-  // Register route 
-  app.get('/users/register', (req, res) => {
-    res.send('register')
-  });
-
   // Use routes 
   app.use('/ideas', ideas);
+  app.use('/users', users);
 
 // Listen to certain port 
 const port = 5000;
