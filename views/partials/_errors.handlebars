@@ -1,4 +1,12 @@
 
+{{#if error}}
+   <div class="alert alert-danger">
+    {{error}}
+  </div>
+{{else}}
+
+{{/if}}
+
 {{!-- Loop through errors table & display the errors messages --}}
 {{#each errors}}
   <div class="alert alert-danger">

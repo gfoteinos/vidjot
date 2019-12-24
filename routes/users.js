@@ -22,7 +22,11 @@ router.get('/register', (req, res) => {
 
 // Submit "login" page ("post" request) - Login user 
 router.post('/login', (req, res, next) => {
+  // Passport authentication 
+    // Use the "local" strategy 
     passport.authenticate('local', {
+      // Redirect in "ideas" page in case of success or 
+      // in "login" page in case of failure & flash an error msg
       successRedirect: '/ideas',
       failureRedirect: '/users/login',
       failureFlash: true
@@ -32,7 +36,8 @@ router.post('/login', (req, res, next) => {
 // Submit "register" form page ("post" request) - Add user  
 router.post('/register', (req, res) => {
   let errors = [];
-
+  // If the passwords does not match or the password is less than
+  // 4 characters fill in the table with the errors descriptions
   if(req.body.password != req.body.password2) {
     errors.push({text:'Passwords do not match'});
   }
@@ -89,4 +94,13 @@ router.post('/register', (req, res) => {
   }
 });
 
+// Logout user 
+router.get('/logout', (req, res) => {
+  // Logout, flash a success msg & redirect to "login" page 
+  req.logout();
+  req.flash('success_msg', 'You are logged out');
+  res.redirect('/users/login');
+});
+
+// Export router to linked to "app.js" file 
 module.exports = router;

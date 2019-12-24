@@ -2,15 +2,19 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const router = express.Router();
+// Bring in a spesific function from the "../helpers/auth.js"
+// file & use this function to every route to protect them
+const {ensureAuthenticated} = require('../helpers/auth');
 
 // Load Idea model 
 require('../models/Idea');
 const Idea = mongoose.model('ideas');
 
 // Load "ideas" page ("GET" request) with data from database 
-router.get('/', (req, res) => {
-  // Fetch data from database (collection "Idea")
-  Idea.find({})
+router.get('/', ensureAuthenticated, (req, res) => {
+  // Fetch data from database (collection "Idea") 
+  // quering by user id
+  Idea.find({user: req.user.id})
     // Sort them in descent order 
     .sort({ date: 'desc' })
     // Load the "/ideas" page rendering the "/ideas/index.handlebars" file & passing the data (collection "Ideas")
@@ -22,27 +26,37 @@ router.get('/', (req, res) => {
 });
 
 // Load "add idea" form page ("GET" request) 
-router.get('/add', (req, res) => {
+router.get('/add', ensureAuthenticated, (req, res) => {
   // Load the "/ideas/add" page rendering the "ideas/add.handlebars" file 
   res.render('ideas/add');
 });
 
 // Load "edit idea" form page ("GET" request) 
-router.get('/edit/:id', (req, res) => {
+router.get('/edit/:id', ensureAuthenticated, (req, res) => {
   // Fetch data from database (single document - row) via id
   Idea.findOne({
     _id: req.params.id
   })
     // Load the "/ideas/edit/:id" page rendering the "ideas/edit.handlebars" file & passing the data from database 
     .then(idea => {
-      res.render('ideas/edit', {
-        idea: idea
-      });
+      // If the user in app is not the same with the user in 
+      // database; in other words if the logged in user try to get
+      // other's user ideas then flash error msg & redirect to 
+      // the looged in user's "ideas" page else load logged in 
+      // user's ideas "edit" page
+      if(idea.user != req.user.id) {
+        req.flash('error_msg', 'Not Authorized');
+        res.redirect('/ideas');
+      } else {
+        res.render('ideas/edit', {
+          idea: idea
+        });
+      }
     });
 });
 
 // Submit "add ideas" form page ("post" request) - Add idea
-router.post('/', (req, res) => {
+router.post('/', ensureAuthenticated, (req, res) => {
   // Error handling 
   let errors = [];
 
@@ -60,7 +74,7 @@ router.post('/', (req, res) => {
   if (errors.length > 0) {
     // Load the "ideas/add" form page rendering 
     //"ideas/add.handlebars" file & pass in the errors
-    res.render('ideas/add', {
+    res.render('/add', {
       errors: errors,             //The errors texts
       title: req.body.title,      //The user input "title" text
       details: req.body.details   //The user input "details" text
@@ -70,7 +84,8 @@ router.post('/', (req, res) => {
       // Preparing adding by store input data into a variable 
       const newUser = {
         title: req.body.title,
-        details: req.body.details
+        details: req.body.details,
+        user: req.user.id
       }
       // Pass the variable into a new collection-table 
       new Idea(newUser)
@@ -85,7 +100,7 @@ router.post('/', (req, res) => {
 });
 
 // Submit "edit idea" form page ("put" request) - Update idea
-router.put('/:id', (req, res) => {
+router.put('/:id', ensureAuthenticated, (req, res) => {
   // Query the database via id parameter 
   Idea.findOne({
     _id: req.params.id
@@ -107,7 +122,7 @@ router.put('/:id', (req, res) => {
 });
 
 // Submit "delete idea" form page ("delete" request) - Delete idea
-router.delete('/:id', (req, res) => {
+router.delete('/:id', ensureAuthenticated, (req, res) => {
   // Delete data from database via id 
   Idea.remove({
     _id: req.params.id
@@ -119,4 +134,5 @@ router.delete('/:id', (req, res) => {
     })
 });
 
+// Export router to linked to "app.js" file 
 module.exports = router;

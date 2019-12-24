@@ -17,7 +17,7 @@ const app = express();
 const ideas = require('./routes/ideas');
 const users = require('./routes/users');
 
-// Passport config 
+// Passport config - link passport module
 require('./config/passport.js')(passport);
 
 // Map global promise - get rid of warning 
@@ -57,14 +57,23 @@ app.use(session({
   saveUninitialized: true
 }));
 
+// Passport middleware 
+// It's important to go bellow the "Express session middleware"
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 // Connect-flash middleware 
 app.use(flash());
 
-// Global variables 
+// Global variables for flash messages
 app.use(function(req, res, next) {
   res.locals.success_msg = req.flash('success_msg');
   res.locals.error_msg = req.flash('error_msg');
   res.locals.error = req.flash('error');
+  // Set a global var for logged user to "user" if exist or to "null" 
+  // if it's not exist
+  res.locals.user = req.user || null;
   next();
 })
 
