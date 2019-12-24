@@ -1,0 +1,47 @@
+[33mcommit a7b1671c0bc69a75b6eef7d8f3f7874d2063173b[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m
+Author: gfoteinos <56113760+gfoteinos@users.noreply.github.com>
+Date:   Sun Dec 22 17:10:01 2019 +0000
+
+    Create the 'login' & 'register' pages. Add functionality to the 'register' page
+
+[33mcommit ffe480494b3b7d9b831afc1e58b0d7647174e319[m
+Author: gfoteinos <56113760+gfoteinos@users.noreply.github.com>
+Date:   Fri Dec 20 17:19:43 2019 +0000
+
+    Create routes and clean the app.js file
+
+[33mcommit 5a43028b8400c476271aefca31a514c42418c4c8[m
+Author: gfoteinos <56113760+gfoteinos@users.noreply.github.com>
+Date:   Thu Dec 19 18:21:19 2019 +0000
+
+    Remove idea data, Flash messaging
+
+[33mcommit a0b7dc380772291a1cd806bc10d6e00e52198fa0[m
+Author: gfoteinos <56113760+gfoteinos@users.noreply.github.com>
+Date:   Wed Dec 18 19:10:39 2019 +0000
+
+    Change README file
+
+[33mcommit 3461e6b3664e5918e374c21a6c0b687885f378aa[m
+Author: gfoteinos <56113760+gfoteinos@users.noreply.github.com>
+Date:   Wed Dec 18 18:28:37 2019 +0000
+
+    Save 'idea' to MongoDB, Fetch 'ideas' from MongoDB, edit 'idea' form, update 'idea' data
+
+[33mcommit 489025a3b272035f1fc4622c6b45547abe010052[m
+Author: gfoteinos <56113760+gfoteinos@users.noreply.github.com>
+Date:   Tue Dec 17 18:08:50 2019 +0000
+
+    Add README.md file
+
+[33mcommit edacdaaa013a1ab5a0c14afa10f3caa69b69cae6[m
+Author: gfoteinos <56113760+gfoteinos@users.noreply.github.com>
+Date:   Tue Dec 17 17:43:56 2019 +0000
+
+    Server side form validation: install 'body parser' module, bring that module in, add it's middleware, server & client side validation
+
+[33mcommit 5f9edfac6fb39b37515b586f87d8e98828e07031[m
+Author: gfoteinos <56113760+gfoteinos@users.noreply.github.com>
+Date:   Tue Dec 17 11:26:23 2019 +0000
+
+    Initialize app

@@ -2,10 +2,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const passport = require('passport');
 const router = express.Router();
 
 
-// Load Idea model 
+// Load User model 
 require('../models/User');
 const User = mongoose.model('users');
 
@@ -17,6 +18,15 @@ const User = mongoose.model('users');
 // Load "Register" form page ("GET" request)
 router.get('/register', (req, res) => {
   res.render('users/register');
+});
+
+// Submit "login" page ("post" request) - Login user 
+router.post('/login', (req, res, next) => {
+    passport.authenticate('local', {
+      successRedirect: '/ideas',
+      failureRedirect: '/users/login',
+      failureFlash: true
+    })(req, res, next);
 });
 
 // Submit "register" form page ("post" request) - Add user  
@@ -42,10 +52,10 @@ router.post('/register', (req, res) => {
       password2: req.body.password2
     });
   } else {
-    // Check if there is a user with the input email 
+    // Check if there is a user with the same input email 
     User.findOne({email: req.body.email})
       .then(user => {
-        // If there is a user; then flash an error message & redirect to the registry page elae save the user
+        // If there is a user; then flash an error message & redirect to the registry page; else save the user
         if(user) {
           req.flash('error_msg', 'Email already registered');
           res.redirect('/users/register');
@@ -67,6 +77,7 @@ router.post('/register', (req, res) => {
                 req.flash('success_msg', 'You are now register and can loggin');
                 res.redirect('/users/login');
               })
+              // Catch any errors 
               .catch(err => {
                 console.log(err);
                 return;
