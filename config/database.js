@@ -1,6 +1,6 @@
 
 if(process.env.NODE_ENV === 'production') {
-  module.exports = {mongoURI : 'mongodb+srv://dbuser_a:<password>@ideas-prod-x0u7h.mongodb.net/test?retryWrites=true&w=majority'};
+  module.exports = require('./prod');
 } else {
-  module.exports = {mongoURI: 'mongodb://localhost/vidjot-dev'}
+  module.exports = require('./dev');
 }
